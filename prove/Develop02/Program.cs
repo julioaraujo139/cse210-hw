@@ -7,6 +7,12 @@ class Entry
     public string Prompt { get; set; }
     public string Response { get; set; }
     public string Date { get; set; }
+    public TimeSpan ScriptureStudyTime { get; set; } // New property for scripture study time
+
+    public string GetFormattedScriptureStudyTime()
+    {
+        return ScriptureStudyTime.ToString(@"hh\:mm");
+    }
 }
 
 class Journal
@@ -18,13 +24,14 @@ class Journal
         entries = new List<Entry>();
     }
 
-    public void AddEntry(string prompt, string response, string date)
+    public void AddEntry(string prompt, string response, string date, TimeSpan scriptureStudyTime)
     {
         Entry newEntry = new Entry
         {
             Prompt = prompt,
             Response = response,
-            Date = date
+            Date = date,
+            ScriptureStudyTime = scriptureStudyTime
         };
         entries.Add(newEntry);
     }
@@ -33,7 +40,8 @@ class Journal
     {
         foreach (var entry in entries)
         {
-            Console.WriteLine($"Date: {entry.Date} - Prompt: {entry.Prompt}\n{entry.Response}\n");
+            Console.WriteLine($"Date: {entry.Date} - Prompt: {entry.Prompt}\n{entry.Response}");
+            Console.WriteLine($"Scripture Study Time: {entry.GetFormattedScriptureStudyTime()}\n");
         }
     }
 
@@ -43,7 +51,7 @@ class Journal
         {
             foreach (var entry in entries)
             {
-                writer.WriteLine($"{entry.Date}|{entry.Prompt}|{entry.Response}");
+                writer.WriteLine($"{entry.Date}|{entry.Prompt}|{entry.Response}|{entry.GetFormattedScriptureStudyTime()}");
             }
         }
     }
@@ -59,9 +67,13 @@ class Journal
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] parts = line.Split('|');
-                    if (parts.Length == 3)
+                    if (parts.Length == 4)
                     {
-                        AddEntry(parts[1], parts[2], parts[0]);
+                        TimeSpan scriptureStudyTime;
+                        if (TimeSpan.TryParseExact(parts[3], @"hh\:mm", null, out scriptureStudyTime))
+                        {
+                            AddEntry(parts[1], parts[2], parts[0], scriptureStudyTime);
+                        }
                     }
                 }
             }
@@ -85,7 +97,8 @@ class Program
             "What was the best part of my day?",
             "How did I see the hand of the Lord in my life today?",
             "What was the strongest emotion I felt today?",
-            "If I had one thing I could do over today, what would it be?"
+            "If I had one thing I could do over today, what would it be?",
+            "How much time did I spend studying scripture today?" // New prompt for scripture study time
         };
 
         Console.WriteLine("Welcome to the Journal Program!");
@@ -110,7 +123,28 @@ class Program
                     Console.Write("> ");
                     string response = Console.ReadLine();
                     string currentDate = DateTime.Now.ToString("MM/dd/yyyy");
-                    myJournal.AddEntry(randomPrompt, response, currentDate);
+
+                    // Check if the prompt is related to scripture study time
+                    if (randomPrompt.ToLower().Contains("scripture"))
+                    {
+                        Console.Write("How much time did you spend studying scripture (hh:mm)? ");
+                        string studyTimeInput = Console.ReadLine();
+                        TimeSpan scriptureStudyTime;
+
+                        // Parse the scripture study time input
+                        if (TimeSpan.TryParseExact(studyTimeInput, @"hh\:mm", null, out scriptureStudyTime))
+                        {
+                            myJournal.AddEntry(randomPrompt, response, currentDate, scriptureStudyTime);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid time format. Entry not recorded.");
+                        }
+                    }
+                    else
+                    {
+                        myJournal.AddEntry(randomPrompt, response, currentDate, TimeSpan.Zero);
+                    }
                     break;
 
                 case "2":
