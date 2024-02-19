@@ -23,24 +23,84 @@ class MindfulnessActivity
 
     protected virtual void DisplayStartingMessage()
     {
-        Console.WriteLine($"Starting {name} activity:");
-        Console.WriteLine(description);
-        Console.Write("Enter duration in seconds: ");
-        duration = int.Parse(Console.ReadLine());
+        Console.WriteLine($"\nWelcome to the {name} activity:");
+        Console.WriteLine($"\n{description}");
+        Console.Write("\nHow long, in seconds, would you like for your session? ");
+        duration = int.Parse(Console.ReadLine()); 
 
-        Console.WriteLine("Prepare to begin...");
-        Thread.Sleep(3000); // Pause for 3 seconds
+        Console.WriteLine("\nGet ready...");
+        List<string> animationStrings = new List<string>();
+        animationStrings.Add("|");
+        animationStrings.Add("/");
+        animationStrings.Add("-");
+        animationStrings.Add("\\");
+        animationStrings.Add("|");
+        animationStrings.Add("/");
+        animationStrings.Add("-");
+        animationStrings.Add("\\");
+
+        foreach (string s in animationStrings)
+        {
+            Console.Write(s);
+            Thread.Sleep(1000);
+            Console.Write("\b \b");
+        }
+        
+        DateTime startTime = DateTime.Now;
+        DateTime endTime = startTime.AddSeconds(duration);
+
+        int i = 0;
+
+        List<string> numberStrings = new List<string>();
+        numberStrings.Add("4");
+        numberStrings.Add("3");
+        numberStrings.Add("2");
+        numberStrings.Add("1");
+
+        Console.Write("\nBreathe in...");
+        Console.Write("\nNow breathe out...\n");
+        
+        while (DateTime.Now < endTime)
+        {
+            string n = numberStrings[i];
+
+            Console.Write(n);
+            Thread.Sleep(1000);
+            Console.Write("\b \b");
+
+            i++;
+
+            if (i >= numberStrings.Count)
+            {
+                i = 0;
+            }
+        }
     }
 
     protected virtual void DisplayEndingMessage()
     {
         Console.WriteLine($"Great job! You have completed the {name} activity for {duration} seconds.");
-        Thread.Sleep(3000); // Pause for 3 seconds
+        List<string> animationStrings = new List<string>();
+        animationStrings.Add("|");
+        animationStrings.Add("/");
+        animationStrings.Add("-");
+        animationStrings.Add("\\");
+        animationStrings.Add("|");
+        animationStrings.Add("/");
+        animationStrings.Add("-");
+        animationStrings.Add("\\");
+
+        foreach (string s in animationStrings)
+        {
+            Console.Write(s);
+            Thread.Sleep(1000);
+            Console.Write("\b \b");
+        }
     }
 
     protected virtual void PerformActivity()
     {
-        // Base implementation for activities
+        // Base implementation for activities       
     }
 }
 
@@ -53,12 +113,23 @@ class BreathingActivity : MindfulnessActivity
 
     protected override void PerformActivity()
     {
-        Console.WriteLine("Get ready to start breathing...\n");
+        Console.WriteLine("\nWell done!!\n");
 
-        for (int i = 0; i < duration; i++)
+        List<string> animationStrings = new List<string>();
+        animationStrings.Add("|");
+        animationStrings.Add("/");
+        animationStrings.Add("-");
+        animationStrings.Add("\\");
+        animationStrings.Add("|");
+        animationStrings.Add("/");
+        animationStrings.Add("-");
+        animationStrings.Add("\\");
+
+        foreach (string s in animationStrings)
         {
-            Console.WriteLine(i % 2 == 0 ? "Breathe in..." : "Breathe out...");
-            Thread.Sleep(1000); // Pause for 1 second
+            Console.Write(s);
+            Thread.Sleep(1000);
+            Console.Write("\b \b");
         }
     }
 }
@@ -148,7 +219,7 @@ class Program
             Console.WriteLine("2. Start reflection activity");
             Console.WriteLine("3. start listing activity");
             Console.WriteLine("4. Quit");
-            Console.Write("\nSelect a choice from the menu: ");
+            Console.Write("Select a choice from the menu: ");
 
             int choice = int.Parse(Console.ReadLine());
 
