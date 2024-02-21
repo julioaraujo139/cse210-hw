@@ -1,6 +1,5 @@
 using System;
 
-// Address class to store event addresses
 public class Address
 {
     public string Street { get; set; }
@@ -14,7 +13,6 @@ public class Address
     }
 }
 
-// Base Event class
 public class Event
 {
     private string eventTitle;
@@ -48,7 +46,6 @@ public class Event
     }
 }
 
-// Lecture class derived from Event
 public class Lecture : Event
 {
     private string speakerName;
@@ -67,7 +64,6 @@ public class Lecture : Event
     }
 }
 
-// Reception class derived from Event
 public class Reception : Event
 {
     private string rsvpEmail;
@@ -84,7 +80,6 @@ public class Reception : Event
     }
 }
 
-// OutdoorGathering class derived from Event
 public class OutdoorGathering : Event
 {
     private string weatherStatement;
@@ -105,10 +100,9 @@ class Program
 {
     static void Main()
     {
-        // Create instances of each type of event
         Address address1 = new Address { Street = "Guaruja St", City = "Curitiba", State = "Parana", ZipCode = "83405-304" };
         Address address2 = new Address { Street = "Harry Feeken St", City = "Sao Jose dos Pinhais", State = "Parana", ZipCode = "81203-439" };
-        Address address3 = new Address { Street = "Hatur Lila St", City = "Colombo", State = "Parana", ZipCode = "82304-450" };
+        Address address3 = new Address { Street = "Hatur Lila St", City = "Colombo", State = "Parana", ZipCode = "83450-288" };
 
         Lecture lectureEvent = new Lecture("Tech Talk", "Exciting tech topics", DateTime.Now.AddDays(14), new TimeSpan(14, 30, 0), address1, "John Doe", 100);
 
@@ -116,7 +110,6 @@ class Program
 
         OutdoorGathering outdoorEvent = new OutdoorGathering("Community Picnic", "Fun in the sun", DateTime.Now.AddDays(30), new TimeSpan(12, 0, 0), address3, "Sunny with a chance of clouds");
 
-        // Generate and output marketing messages for each event
         Console.WriteLine("Standard Details:");
         Console.WriteLine(lectureEvent.GetStandardDetails());
         Console.WriteLine();

@@ -103,7 +103,7 @@ class Swimming : Activity
 
     public override double GetDistance()
     {
-        return Laps * 50 / 1000 * 0.62; // Convert to miles
+        return Laps * 50 / 1000 * 0.62;
     }
 
     public override double GetSpeed()
